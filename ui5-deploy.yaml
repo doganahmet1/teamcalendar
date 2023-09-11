@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "2.4"
+metadata:
+  name: hcm.ux.Teamcalendar
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          destination: BELBIM
+          url: http://192.168.245.128:8000
+          client: "300"
+        app:
+          name: ZHCM_UX_ALTC 
+          description: Çalışan Takvimi
+          package: ZHR_ALPL 
+          transport:  D28K904271

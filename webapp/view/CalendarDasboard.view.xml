@@ -1,0 +1,149 @@
+<mvc:View
+	controllerName="hcm.ux.Teamcalendar.controller.CalendarDasboard"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:unified="sap.ui.unified"
+	xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:core="sap.ui.core"
+	xmlns:commons="sap.ui.commons"
+>
+	<Page title="{i18n>calendar_REQUEST_LIST_VIEW_TITLE}" >
+		<Toolbar>
+			<Button 
+				visible="{calendarModel>/orgEnabled}"
+				id="mangerBoxChangeID"
+				text="{i18n>Orgeh_Hierarchy}"
+				press="onPositionValueRequest"
+				width="12%"
+				icon="sap-icon://filter"
+			/>
+			<ToolbarSpacer/>
+			<CheckBox
+				selected="{calendarModel>/checkBox}"
+				text="{i18n>getLeaved}"
+				select="fireEvent"
+				visible="{calendarModel>/orgEnabled}"
+			/>
+		</Toolbar>
+		<VBox class="sapUiSmallMargin">
+			<PlanningCalendar noDataText="{i18n>noDataText}" 
+			    startDate="{calendarModel>/StartDate}"
+				id="PC1"
+				startDateChange="startDateChange"
+				viewChange="startDateChange"
+				models="models" 
+			 
+				 
+				rows="{
+					path: 'calendarModel>/PersonSet'
+				}"
+				appointmentsVisualization="Filled"
+				appointmentSelect="handleAppointmentSelect"
+				showEmptyIntervalHeaders="false"  
+				stickyHeader="true"
+				
+			>
+				<toolbarContent>
+					<Title
+						text="{calendarModel>/Count} {i18n>ListedPerson}"
+						titleStyle="H4"
+					/>
+					<MultiComboBox
+						selectionFinish="handleSelectionFinish"
+						width="230px"
+						id="CBoxCheck"
+						placeholder="Choose built-in views"
+						selectedKeys="Month,One Month,Week,Day"
+					>
+						<items>
+							<core:Item
+								key="Day"
+								text="{i18n>Day}"
+							/>
+							<core:Item
+								key="Month"
+								text="{i18n>Month}"
+							/>
+							<core:Item
+								key="Week"
+								text="{i18n>1_Week}"
+							/>
+							<core:Item
+								key="One Month"
+								text="{i18n>1_Month}"
+							/>
+						</items>
+					</MultiComboBox>
+				</toolbarContent>
+				<rows>
+					<PlanningCalendarRow
+					
+						text="{
+							path: 'calendarModel>Ename',
+							formatter: '.CheckName'
+						}"
+						title="{
+							path: 'calendarModel>Plans',
+							formatter: '.CheckName'
+						}"
+						appointments="{
+							path: 'calendarModel>LeaveSet',
+							templateShareable: false
+						}"
+						intervalHeaders="{
+							path: 'leave',
+							templateShareable: false
+						}"
+					>
+						<appointments>
+							<unified:CalendarAppointment
+							    class="sapUiCalendarRowAppsIntHead" 
+								id="idpopOver"
+								startDate="{calendarModel>Begda}"
+								endDate="{calendarModel>Endda}"
+								text="{
+									path: 'calendarModel>Tclty',
+									formatter: '.leaveType'
+								}"
+								type="{=${calendarModel>Tclty} === 'AL' ? 'Type02':${calendarModel>Tclty} === 'PL' ? 'Type06':${calendarModel>Tclty} === 'CM' ? 'Type04':''}"
+							>
+							
+								<unified:tooltip>
+									<commons:RichTooltip
+										text="{
+											path: 'calendarModel>Begda',
+											type: 'sap.ui.model.type.Date',
+											formatOptions: {
+												pattern: 'dd.MM.YYYY'
+											}
+										} - {
+											path: 'calendarModel>Endda',
+											type: 'sap.ui.model.type.Date',
+											formatOptions: {
+												pattern: 'dd.MM.YYYY'
+											}
+										}"
+										title="{
+											path: 'calendarModel>Tclty',
+											formatter: '.leaveType'
+										}"
+									/>
+								</unified:tooltip>
+							</unified:CalendarAppointment>
+							
+						</appointments>
+						<intervalHeaders>
+							<unified:CalendarAppointment
+								startDate="{path:'calendarModel>Begda', type: 'sap.ui.model.type.Date', formatOptions: { pattern:'dd.MM.yyyy' ,  strictParsing: true , UTC: true}}"
+								endDate="{path:'calendarModel>Endda' , type: 'sap.ui.model.type.Date', formatOptions: { pattern:'dd.MM.yyyy' , strictParsing: true  , UTC: true}}"
+								text="{calendarModel>Ltype}"
+							/>
+						</intervalHeaders>
+					</PlanningCalendarRow>
+				</rows>
+			</PlanningCalendar>
+		</VBox>
+	</Page>
+</mvc:View>
